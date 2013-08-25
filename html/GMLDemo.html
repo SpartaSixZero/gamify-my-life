@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Gamify My Life </title>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+		<script src="../JavaScript/home.js"></script>
+		<script src="../JavaScript/newTask.js"></script>
+		<script>
+
+			// Use instead of $(document).ready();
+			$(document).on('pageinit', function() {
+
+				// HACK! I need to find a better way to clear local storage 
+				// for debugging purposes
+				var clear = localStorage.getItem("1");
+				console.log(clear);
+				if (clear != true)
+				{
+					localStorage.clear();
+					clear=true;
+					localStorage.setItem("1",clear);
+				}
+				console.log(clear);			
+
+				// On clicking of the completed checkbox, we want to pop up a
+				// dialog for confirmation.
+				var checkboxChecked = function() {
+				    if ($("#myCheckbox").is(":checked"))
+				    {
+						// Delete the task from the task list
+						// Add credits to your bank
+						console.log("checkbox has been checked!")
+				    }
+				};
+				 
+				$( "input[type=checkbox]" ).on( "change", checkboxChecked );
+
+			});
+		
+			var reloadTaskList = function() {
+				var listOfTasks = JSON.parse(localStorage["taskListArray"]);
+				console.log(listOfTasks);
+
+				$("#taskList").empty();
+				$(listOfTasks).each( function(idx,task) {
+				//for (taskJsonObj in listOfTasks) 
+					console.log("task:%o", arguments);
+					$("#taskList").append("<li id="+task["name"]+"><a href=''>"+task["name"]+"</a></li>");
+
+					// This will allow our newly added list items to follow
+					// the jquery mobile styling for list items
+					$("#taskList").listview("refresh");
+				});	
+			}
+
+		</script>
+	</head>
+	<body>
+		<div data-role="page" data-theme="b" id="home">
+
+			<div data-role="header" data-theme="b">
+				<h1>Gamify My Life!</h1>
+
+				<div data-role="navbar" data-theme="a">
+				</div>
+			</div><!-- /header -->
+
+			<div data-role="content" data-theme="a">
+				<h3> Task List </h3>
+				<ul data-role="listview" data-filter=false id="taskList">
+				</ul>
+				
+				<!--
+				<ol data-role="listview" data-filter=true id="swipelist">
+				
+					<li id="page1"><a href="#firstLink">Do Laundry</a></li>
+					<li id="page2"><a href="#secondLink">Go Grocery Shopping</a></li>
+					<li id="page3"><a href="#thirdLink">Pay Bills</a></li>
+				<ol>
+				-->
+				
+				
+
+			</div><!-- /content -->
+
+			<div data-role="footer" data-theme="b" data-position="fixed">
+				<nav data-role="navbar">
+					<ul>		
+						<li><a href="#home"  data-icon="home">Home</a></li>
+						<li><a href="#newTask"  data-icon="edit">New Task</a></li>
+  						<li><a href="#credits" data-icon="star">Credits</a></li>
+					</ul>
+				</nav>
+			</div><!--/footer -->
+		</div><!--/page -->
+
+
+		<div data-role="page" data-theme="b" id="firstLink">
+
+			<div data-role="header" data-theme="b">
+				<h1>Edit Task</h1>
+
+				<div data-role="navbar" data-theme="a">
+				</div>
+			</div><!-- /header -->
+
+			<div data-role="content" data-theme="a">
+				<h1>Do Laundry</h1>
+				<label for="textarea-a">Notes:</label>
+				<label><input type="checkbox" name="checkbox-0" id="myCheckbox" /> Completed </label>
+
+				<a id='lnkDialog' href="#dialog" data-rel="dialog" data-transition="pop" style='display:none;'></a>
+
+			</div><!-- /content -->
+
+			<div data-role="footer" data-theme="b" data-position="fixed">
+				<nav data-role="navbar">
+					<ul>		
+						<li><a href="#home"  data-icon="home">Home</a></li>
+						<li><a href="#newTask"  data-icon="edit">New Task</a></li>
+  						<li><a href="#credits" data-icon="star">Credits</a></li>
+					</ul>
+				</nav>
+			</div><!--/footer-->
+		</div><!--/page -->
+
+
+		<div data-role="page" data-theme="b" id="newTask">
+
+			<div data-role="header" data-theme="b">
+				<h1>Create Task</h1>
+
+				<div data-role="navbar" data-theme="a">
+				</div>
+			</div><!-- /header -->
+
+			<div data-role="content" data-theme="a">
+				<div data-role="fieldcontain">
+		  			<label for="taskName">Task Name:</label>
+		  			<input type="text" name="name" id="taskName" value="" />
+				</div>
+				<!--<a href="#home" data-role="button" id="saveButton">Save</a>-->
+				<button id="saveButton">Save</button>  
+			</div><!-- /content -->
+
+			<div data-role="footer" data-theme="b" data-position="fixed">
+				<nav data-role="navbar">
+					<ul>		
+						<li><a href="#home"  data-icon="home">Home</a></li>
+						<li><a href="#newTask"  data-icon="edit">New Task</a></li>
+  						<li><a href="#credits" data-icon="star">Credits</a></li>
+					</ul>
+				</nav>
+			</div><!--/footer-->
+		</div><!--/page -->
+
+
+		<div data-role="page" data-theme="b" id="credits">
+
+			<div data-role="header" data-theme="b">
+				<h1>Your Credits</h1>
+
+				<div data-role="navbar" data-theme="a">
+				</div>
+			</div><!-- /header -->
+
+			<div data-role="content" data-theme="a">
+				Currently, you have 0 credits.
+			</div><!-- /content -->
+
+			<div data-role="footer" data-theme="b" data-position="fixed">
+				<nav data-role="navbar">
+					<ul>		
+						<li><a href="#home"  data-icon="home">Home</a></li>
+						<li><a href="#newTask"  data-icon="edit">New Task</a></li>
+  						<li><a href="#credits" data-icon="star">Credits</a></li>
+					</ul>
+				</nav>
+			</div><!--/footer-->
+		</div><!--/page -->
+
+
+		<div data-role="page" data-theme="b" id="confirmCompletionDialog">
+			<h1>Are you sure?<h1>
+			<input type=button id="yesButton">
+			<input type=button id="noButton">
+
+		</div><!--/page -->
+
+
+
+
+	</body>
+</html>
+
