@@ -34,19 +34,20 @@ $(document).on("pageinit", "#newTask", function() {
 
 });
 
-
+// BUG! This needs to be called at each pageinit because we are not creating
+// these views for tasks stored in local storage from a previous session
 var createTaskView = function (newTask) {
 	
 	// Dynamically create a new task view to be accessed when we 
 	// swipe on a task in the home page
 	console.log("creating a new task view")
-	var newPageId = newTask+"View";
+	var newTaskIdWithoutSpaces = newTask.replace(/ /g,'');
+	var newPageId = newTaskIdWithoutSpaces+"View";
+	var taskCheckBoxName = newTaskIdWithoutSpaces + "Checkbox";
 
-	var newPage = $("<div data-role='page' data-url='" + newPageId + "'id='" + newPageId + "'><div data-role=header><a data-iconpos='left' data-icon='back' href='#' data-role='button' data-rel='back'>Back</a><h1>Dynamic Page</h1></div><div data-role=content>Stuff here</div></div>");
+	var newPage = $("<div data-role='page' data-theme='b' data-url='" + newPageId + "'id='" + newPageId + "'><div data-role=header data-theme='b'><h1>" + newTask +"</h1></div><div data-role=content data-theme='a'><label for='slider-1'>Assign points:</label><input type='range' name='slider-1' id='slider-1' value='60' min='0' max='100' /><input type='checkbox' name='" + taskCheckBoxName + "' id='completedCheckbox' class='custom' data-task-name='" + newTask + "' /><label for='completedCheckbox'>Completed</label></div><div data-role=footer data-theme='b' data-position='fixed'><nav data-role='navbar'><ul><li><a href='#home' data-icon='home'>Home</a></li><li><a href='#newTask' data-icon='edit'>New Task</a></li><li><a href='#credits' data-icon='star'>Credits</a></li></ul></nav></div></div>");
 
     // Append the new page into pageContainer
     newPage.appendTo($.mobile.pageContainer);
-
-    // Move to this page by ID '#page'
-    //$.mobile.changePage('#page');
 };
+

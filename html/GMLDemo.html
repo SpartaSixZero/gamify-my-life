@@ -14,6 +14,11 @@
 
 				// HACK! I need to find a better way to clear local storage 
 				// for debugging purposes
+				// BUG! This code is somehow wiping my local storage values 
+				// when home screen is displayed. But only sometimes.
+				// Solution: Once the logic for deleting a task is done, 
+				// we won't need this hack code anymore.
+				/*
 				var clear = localStorage.getItem("1");
 				console.log(clear);
 				if (clear != true)
@@ -23,38 +28,53 @@
 					localStorage.setItem("1",clear);
 				}
 				console.log(clear);			
+				*/
 
-				// On clicking of the completed checkbox, we want to pop up a
-				// dialog for confirmation.
 				var checkboxChecked = function() {
-				    if ($("#myCheckbox").is(":checked"))
+				    if ($("#completedCheckbox").is(":checked"))
 				    {
-						// Delete the task from the task list
 						// Add credits to your bank
-						console.log("checkbox has been checked!")
+						console.log("checkbox has been checked!");
+
+						var taskToBeDeleted = this.getAttribute("data-task-name");
+						// Store this value into localStorage for later...
+						localStorage.setItem("taskToBeDeleted", taskToBeDeleted);
+
+						// On clicking of the completed checkbox, we want to
+						// pop up a dialog for confirmation.
+						$.mobile.changePage( "#confirmCompletionDialog", { role: "dialog" } );
 				    }
 				};
 				 
 				$( "input[type=checkbox]" ).on( "change", checkboxChecked );
 
-			});
-		
-			var reloadTaskList = function() {
-				var listOfTasks = JSON.parse(localStorage["taskListArray"]);
-				console.log(listOfTasks);
+				$("#completedTaskYes").click(function (e) {
+					console.log("Yes, we completed our task");
 
-				$("#taskList").empty();
-				$(listOfTasks).each( function(idx,task) {
-				//for (taskJsonObj in listOfTasks) 
-					console.log("task:%o", arguments);
-					$("#taskList").append("<li id="+task["name"]+"><a href=''>"+task["name"]+"</a></li>");
+					var taskToBeDeleted = localStorage.getItem("taskToBeDeleted");
+					removeTaskFromTaskList(taskToBeDeleted);
 
-					// This will allow our newly added list items to follow
-					// the jquery mobile styling for list items
-					$("#taskList").listview("refresh");
-				});	
-			}
+					$.mobile.changePage( "#home");
+				});
 
+				var removeTaskFromTaskList = function( taskToBeDeleted) {
+					if (localStorage.getItem("taskListArray")) {
+			
+						// Parse the stringified array object 
+						var listOfTasks = JSON.parse(localStorage["taskListArray"]);
+
+						// Delete the entry in listOfTasks where name matches
+						// taskToBeDeleted
+
+						$(listOfTasks).each( function(idx,task) { 
+							console.log("task name is: "+task["name"]);
+							if (task["name"] == taskToBeDeleted)
+								console.log("Task found, delete this entry!")
+						});
+					}
+				}
+			
+			}); // End of Document onPageInit 
 		</script>
 	</head>
 	<body>
@@ -141,7 +161,6 @@
 		  			<label for="taskName">Task Name:</label>
 		  			<input type="text" name="name" id="taskName" value="" />
 				</div>
-				<!--<a href="#home" data-role="button" id="saveButton">Save</a>-->
 				<button id="saveButton">Save</button>  
 			</div><!-- /content -->
 
@@ -183,14 +202,16 @@
 
 
 		<div data-role="page" data-theme="b" id="confirmCompletionDialog">
-			<h1>Are you sure?<h1>
-			<input type=button id="yesButton">
-			<input type=button id="noButton">
+			<div data-role="header" data-theme="b">
+				<h1>Are you sure?</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+			<p> Are you sure you completed the task?</p>
+				<button id="completedTaskYes">Yes</button>
+				<button id="completedTaskNo">No</button>
+			</div><!-- /content -->
 
 		</div><!--/page -->
-
-
-
 
 	</body>
 </html>
