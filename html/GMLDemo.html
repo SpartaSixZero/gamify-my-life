@@ -8,7 +8,6 @@
 		<script src="../JavaScript/home.js"></script>
 		<script src="../JavaScript/newTask.js"></script>
 		<script>
-
 			// Use instead of $(document).ready();
 			$(document).on('pageinit', function() {
 
@@ -29,6 +28,11 @@
 				}
 				console.log(clear);			
 				*/
+
+				// This will allow our task list to be populated with the tasks stored in localStorage from previous sessions.
+				if (localStorage.getItem("taskListArray")) {
+					reloadTaskList();
+				}
 
 				var checkboxChecked = function() {
 				    if ($("#completedCheckbox").is(":checked"))
@@ -54,26 +58,40 @@
 					var taskToBeDeleted = localStorage.getItem("taskToBeDeleted");
 					removeTaskFromTaskList(taskToBeDeleted);
 
+					reloadTaskList();
+
 					$.mobile.changePage( "#home");
 				});
 
 				var removeTaskFromTaskList = function( taskToBeDeleted) {
 					if (localStorage.getItem("taskListArray")) {
-			
+
 						// Parse the stringified array object 
 						var listOfTasks = JSON.parse(localStorage["taskListArray"]);
 
+						var taskIndex = -1;
 						// Delete the entry in listOfTasks where name matches
 						// taskToBeDeleted
-
 						$(listOfTasks).each( function(idx,task) { 
 							console.log("task name is: "+task["name"]);
 							if (task["name"] == taskToBeDeleted)
+							{
 								console.log("Task found, delete this entry!")
+								taskIndex = idx;
+								//listOfTasks.splice(idx, 1);
+							}
 						});
+						if (taskIndex != -1)
+						{
+							listOfTasks.splice(taskIndex, 1);
+						}
+
+						// Replace the old task list object in localStorage 
+						// with our new listOfTasks
+						localStorage.setItem("taskListArray", JSON.stringify(listOfTasks));	
 					}
 				}
-			
+
 			}); // End of Document onPageInit 
 		</script>
 	</head>
@@ -91,17 +109,6 @@
 				<h3> Task List </h3>
 				<ul data-role="listview" data-filter=false id="taskList">
 				</ul>
-				
-				<!--
-				<ol data-role="listview" data-filter=true id="swipelist">
-				
-					<li id="page1"><a href="#firstLink">Do Laundry</a></li>
-					<li id="page2"><a href="#secondLink">Go Grocery Shopping</a></li>
-					<li id="page3"><a href="#thirdLink">Pay Bills</a></li>
-				<ol>
-				-->
-				
-				
 
 			</div><!-- /content -->
 
