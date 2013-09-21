@@ -1,139 +1,104 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title> Gamify My Life </title>
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
-		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-		<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
-		<script src="./js/home.js"></script>
-		<script src="./js/newTask.js"></script>
-		<script src="./js/init.js"></script>
-	</head>
-	<body>
-		<div data-role="page" data-theme="b" id="home">
+    <head>
+        <title>Gamify My Life</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+    </head>
+    <body>
+        <script type="text/template" id="home">
+            <div data-role="header" data-theme="b">
+                <h1>Gamify My Life!</h1>
 
-			<div data-role="header" data-theme="b">
-				<h1>Gamify My Life!</h1>
+                <div data-role="navbar" data-theme="a">
+                </div>
+            </div>
 
-				<div data-role="navbar" data-theme="a">
-				</div>
-			</div><!-- /header -->
+            <div data-role="content" data-theme="a">
+                <h3> Task List </h3>
+                <ul data-role="listview" data-filter=false id="taskList">
+                </ul>
 
-			<div data-role="content" data-theme="a">
-				<h3> Task List </h3>
-				<ul data-role="listview" data-filter=false id="taskList">
-				</ul>
+            </div>
 
-			</div><!-- /content -->
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <nav data-role="navbar">
+                    <ul>        
+                        <li><a href="#"  data-icon="home">Home</a></li>
+                        <li><a href="#todo/new"  data-icon="edit">New Task</a></li>
+                        <li><a href="#credits" data-icon="star">Credits</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </script>
 
-			<div data-role="footer" data-theme="b" data-position="fixed">
-				<nav data-role="navbar">
-					<ul>		
-						<li><a href="#home"  data-icon="home">Home</a></li>
-						<li><a href="#newTask"  data-icon="edit">New Task</a></li>
-  						<li><a href="#credits" data-icon="star">Credits</a></li>
-					</ul>
-				</nav>
-			</div><!--/footer -->
-		</div><!--/page -->
+        <script type="text/template" id="newTask">        
+            <div data-role="header" data-theme="b">
+                <h1>Create Task</h1>
 
+                <div data-role="navbar" data-theme="a">
+                </div>
+            </div>
 
-		<div data-role="page" data-theme="b" id="firstLink">
+            <div data-role="content" data-theme="a">
+                <div data-role="fieldcontain">
+                    <label for="taskName">Task Name:</label>
+                    <input type="text" name="name" id="taskName" value="" />
+                </div>
+                <button id="saveButton">Save</button>  
+            </div>
 
-			<div data-role="header" data-theme="b">
-				<h1>Edit Task</h1>
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <nav data-role="navbar">
+                    <ul>        
+                        <li><a href="#"  data-icon="home">Home</a></li>
+                        <li><a href="#todo/new"  data-icon="edit">New Task</a></li>
+                        <li><a href="#credits" data-icon="star">Credits</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </script>
 
-				<div data-role="navbar" data-theme="a">
-				</div>
-			</div><!-- /header -->
+        <script type="text/template" id="credits">
+            <div data-role="header" data-theme="b">
+                <h1>Your Credits</h1>
 
-			<div data-role="content" data-theme="a">
-				<h1>Do Laundry</h1>
-				<label for="textarea-a">Notes:</label>
-				<label><input type="checkbox" name="checkbox-0" id="myCheckbox" /> Completed </label>
+                <div data-role="navbar" data-theme="a">
+                </div>
+            </div>
 
-				<a id='lnkDialog' href="#dialog" data-rel="dialog" data-transition="pop" style='display:none;'></a>
+            <div data-role="content" data-theme="a">
+                Currently, you have 0 credits.
+            </div>
 
-			</div><!-- /content -->
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <nav data-role="navbar">
+                    <ul>        
+                        <li><a href="#"  data-icon="home">Home</a></li>
+                        <li><a href="#todo/new"  data-icon="edit">New Task</a></li>
+                        <li><a href="#credits" data-icon="star">Credits</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </script>
 
-			<div data-role="footer" data-theme="b" data-position="fixed">
-				<nav data-role="navbar">
-					<ul>		
-						<li><a href="#home"  data-icon="home">Home</a></li>
-						<li><a href="#newTask"  data-icon="edit">New Task</a></li>
-  						<li><a href="#credits" data-icon="star">Credits</a></li>
-					</ul>
-				</nav>
-			</div><!--/footer-->
-		</div><!--/page -->
+<!--        <div data-role="page" data-theme="b" id="confirmCompletionDialog">
+            <div data-role="header" data-theme="b">
+                <h1>Are you sure?</h1>
+            </div>
+            <div data-role="content">
+            <p> Are you sure you completed the task?</p>
+                <button id="completedTaskYes">Yes</button>
+                <button id="completedTaskNo">No</button>
+            </div>
 
+        </div> -->
 
-		<div data-role="page" data-theme="b" id="newTask">
-
-			<div data-role="header" data-theme="b">
-				<h1>Create Task</h1>
-
-				<div data-role="navbar" data-theme="a">
-				</div>
-			</div><!-- /header -->
-
-			<div data-role="content" data-theme="a">
-				<div data-role="fieldcontain">
-		  			<label for="taskName">Task Name:</label>
-		  			<input type="text" name="name" id="taskName" value="" />
-				</div>
-				<button id="saveButton">Save</button>  
-			</div><!-- /content -->
-
-			<div data-role="footer" data-theme="b" data-position="fixed">
-				<nav data-role="navbar">
-					<ul>		
-						<li><a href="#home"  data-icon="home">Home</a></li>
-						<li><a href="#newTask"  data-icon="edit">New Task</a></li>
-  						<li><a href="#credits" data-icon="star">Credits</a></li>
-					</ul>
-				</nav>
-			</div><!--/footer-->
-		</div><!--/page -->
-
-
-		<div data-role="page" data-theme="b" id="credits">
-
-			<div data-role="header" data-theme="b">
-				<h1>Your Credits</h1>
-
-				<div data-role="navbar" data-theme="a">
-				</div>
-			</div><!-- /header -->
-
-			<div data-role="content" data-theme="a">
-				Currently, you have 0 credits.
-			</div><!-- /content -->
-
-			<div data-role="footer" data-theme="b" data-position="fixed">
-				<nav data-role="navbar">
-					<ul>		
-						<li><a href="#home"  data-icon="home">Home</a></li>
-						<li><a href="#newTask"  data-icon="edit">New Task</a></li>
-  						<li><a href="#credits" data-icon="star">Credits</a></li>
-					</ul>
-				</nav>
-			</div><!--/footer-->
-		</div><!--/page -->
-
-
-		<div data-role="page" data-theme="b" id="confirmCompletionDialog">
-			<div data-role="header" data-theme="b">
-				<h1>Are you sure?</h1>
-			</div><!-- /header -->
-			<div data-role="content">
-			<p> Are you sure you completed the task?</p>
-				<button id="completedTaskYes">Yes</button>
-				<button id="completedTaskNo">No</button>
-			</div><!-- /content -->
-
-		</div><!--/page -->
-
-	</body>
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="./js/jqm-config.js"></script>
+        <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+        <script src="./js/lib/underscore.js"></script>
+        <script src="./js/lib/backbone.js"></script>
+        <script src="./js/app.js"></script>
+    </body>
 </html>
-
