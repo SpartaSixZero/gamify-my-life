@@ -18,6 +18,15 @@ views.NewTodoView = Backbone.View.extend({
     } 
 });
 
+views.EditTodoView = Backbone.View.extend({
+    template: _.template($("#editTask").html()),
+
+    render: function(eventName) {
+        $(this.el).html(this.template());
+        return this;
+    }
+});
+
 views.CreditsView = Backbone.View.extend({
     template: _.template($("#credits").html()),
 

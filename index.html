@@ -82,7 +82,32 @@
             </div>
         </script>
 
-<!--        <div data-role="page" data-theme="b" id="confirmCompletionDialog">
+        <script type="text/template" id="editTask">
+                <div data-role="header" data-theme="b">
+                    <h1>Edit Task</h1>
+                    <div data-role="navbar" data-theme="a">
+                    </div>
+                </div>
+
+                <div data-role="content" data-theme="a">
+                    <h1>Do Laundry</h1>
+                    <label for="textarea-a">Notes:</label>
+                    <label><input type="checkbox" name="checkbox-0" id="myCheckbox" /> Completed </label>
+                    <a id='lnkDialog' href="#dialog" data-rel="dialog" data-transition="pop" style='display:none;'></a>
+                </div>
+
+                <div data-role="footer" data-theme="b" data-position="fixed">
+                    <nav data-role="navbar">
+                        <ul>        
+                            <li><a href="#"  data-icon="home">Home</a></li>
+                            <li><a href="#todo/new"  data-icon="edit">New Task</a></li>
+                            <li><a href="#credits" data-icon="star">Credits</a></li>
+                        </ul>
+                    </nav>
+                </div>
+        </script>
+
+        <script type="text/template" id="confirmCompletionDialog">
             <div data-role="header" data-theme="b">
                 <h1>Are you sure?</h1>
             </div>
@@ -91,8 +116,7 @@
                 <button id="completedTaskYes">Yes</button>
                 <button id="completedTaskNo">No</button>
             </div>
-
-        </div> -->
+        </script>
 
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="./js/jqm-config.js"></script>
