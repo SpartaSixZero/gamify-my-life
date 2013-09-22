@@ -1,16 +1,75 @@
 /* TODO: Investigate using require.js */
+window.models = {};
+
+window.models.Todo = Backbone.Model.extend({
+    defaults: function() {
+        return {
+            id: _.uniqueId('task'),
+            name: "No Name Given",
+            complete: false
+        }
+    }
+});
+
+window.models.TodoCollection = Backbone.Collection.extend({
+    model: models.Todo
+});
+
+window.myTasks = new models.TodoCollection();
+var initTasks = localStorage.getItem("myTasks");
+if (initTasks) {
+    initTasks = JSON.parse(initTasks);
+    initTasks.forEach(function(task) {
+        myTasks.add(new models.Todo(task));
+    });
+}
+
+myTasks.on("all", function() {
+    localStorage.setItem("myTasks", JSON.stringify(myTasks.toJSON()));
+});
+
+/* --- Views --- */
+
 window.views = {};
 views.HomeView = Backbone.View.extend({
     template: _.template($("#home").html()),
 
+    events: {
+        'click': 'showAlert'
+    },
+
+    getListItem: function(taskObj) {
+        console.log("taskObj: %o", taskObj);
+        return $("<li>").attr("data-taskId", taskObj.id).append(taskObj.name);
+    },
+
+    redraw: function() {
+        myTasks.forEach(function(task) {
+            this.$("#taskList").append(this.getListItem(task));
+        });
+    },
+
     render: function(eventName) {
         $(this.el).html(this.template());
+        console.log("HomeView.tasks: %o", this.tasks);
         return this;
     }
 });
 
 views.NewTodoView = Backbone.View.extend({
     template: _.template($("#newTask").html()),
+
+    events: {
+        "click #saveButton": "saveNewTask"
+    },
+
+    saveNewTask: function(event) {
+        var taskName = this.$("#taskName").val();
+        if (taskName) {
+            myTasks.add(new models.Todo({name: taskName}));
+            console.log("Added task. myTasks: %o", myTasks.toJSON());
+        }
+    },
 
     render: function(eventName) {
         $(this.el).html(this.template());
@@ -36,6 +95,8 @@ views.CreditsView = Backbone.View.extend({
     } 
 });
 
+/* --- Router --- */
+
 var AppRouter = Backbone.Router.extend({
     routes:{
         "":"home",
@@ -55,7 +116,9 @@ var AppRouter = Backbone.Router.extend({
 
     home: function() {
         console.log("home called!");
-        this.changePage(new window.views.HomeView());
+        var homeView = new window.views.HomeView({collection: myTasks});
+        this.changePage(homeView);
+        console.log("home: homeView: %o", homeView.collection);
     },
 
     newTodo: function() {
@@ -79,21 +142,6 @@ var AppRouter = Backbone.Router.extend({
         }
         $.mobile.changePage($(page.el), {changeHash: false, transition: transition});
     }
-});
-
-window.models = {};
-
-window.models.Todo = Backbone.Model.extend({
-    defaults: function() {
-        return {
-            name: "No Name Given",
-            complete: false
-        }
-    }
-});
-
-window.models.TodoCollection = Backbone.Collection.extend({
-    model: models.Todo
 });
 
 $(document).ready(function() {

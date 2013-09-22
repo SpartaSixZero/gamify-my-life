@@ -17,6 +17,15 @@
             <div data-role="content" data-theme="a">
                 <h3> Task List </h3>
                 <ul data-role="listview" data-filter=false id="taskList">
+                    <%
+                        var tasks = this.collection.toJSON();
+                        tasks.forEach(function(task) {
+                            console.log("task: %o", task);
+                            %>
+                            <li data-taskId="<%= task.id %>"><a href=""><%= task.name %></a></li>
+                            <%
+                        });
+                    %>
                 </ul>
 
             </div>
