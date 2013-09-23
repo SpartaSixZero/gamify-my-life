@@ -38,17 +38,6 @@ views.HomeView = Backbone.View.extend({
         'click': 'showAlert'
     },
 
-    getListItem: function(taskObj) {
-        console.log("taskObj: %o", taskObj);
-        return $("<li>").attr("data-taskId", taskObj.id).append(taskObj.name);
-    },
-
-    redraw: function() {
-        myTasks.forEach(function(task) {
-            this.$("#taskList").append(this.getListItem(task));
-        });
-    },
-
     render: function(eventName) {
         $(this.el).html(this.template());
         console.log("HomeView.tasks: %o", this.tasks);
